@@ -15,7 +15,7 @@
 
 ### A Professional Full-Stack CRUD Application with Modern UI/UX
 
-[Live Demo](#) • [Report Bug](https://github.com/Nadeer-Ansari/Nodejs-CRUD-API/issues) • [Request Feature](https://github.com/Nadeer-Ansari/Nodejs-CRUD-API/issues)
+[Live Demo](#):  https://smart-crud-dashboard.onrender.com
 
 </div>
 
