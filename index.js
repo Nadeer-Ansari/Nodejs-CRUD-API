@@ -5,7 +5,11 @@ const MyModel = require("./models/usermodel");
 const app = express();
 const port = process.env.PORT || 9000;
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
@@ -41,6 +45,10 @@ app.get("/api/debug/clean", async (req, res) => {
   } catch (error) {
     res.json({ error: error.message });
   }
+});
+
+app.get("/api/ping", (req, res) => {
+    res.json({ message: "pong", timestamp: new Date().toISOString() });
 });
 
 // ============ VIEW ROUTES ============
