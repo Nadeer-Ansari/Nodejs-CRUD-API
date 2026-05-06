@@ -1,16 +1,18 @@
+// For Vercel serverless deployment
 const express = require("express");
 require("./database/db");
 const cors = require("cors");
 const MyModel = require("./models/usermodel");
 const app = express();
-const port = 9000;
+const port = process.env.PORT || 9000;
+
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-// Serve static files (CSS, JS)
+// Serve static files
 app.use(express.static('public'));
 
 // ============ VIEW ROUTES ============
@@ -49,7 +51,7 @@ app.get("/edituser/:userid", async (req, res) => {
     console.log("Edit user ID:", req.params.userid);
     let user = await MyModel.findById(req.params.userid);
     console.log("Found user:", user);
-
+    
     if (!user) {
       return res.status(404).send("User not found");
     }
@@ -76,13 +78,13 @@ app.post("/updateaction/:userid", async (req, res) => {
   try {
     console.log("Updating user ID:", req.params.userid);
     console.log("Update data:", req.body);
-
+    
     let result = await MyModel.findByIdAndUpdate(
-      req.params.userid,
+      req.params.userid, 
       req.body,
       { new: true, runValidators: true }
     );
-
+    
     if (!result) {
       return res.status(404).send("User not found");
     }
@@ -133,7 +135,7 @@ app.post("/api/users", async (req, res) => {
 app.put("/api/users/:userid", async (req, res) => {
   try {
     let result = await MyModel.findByIdAndUpdate(
-      req.params.userid,
+      req.params.userid, 
       req.body,
       { new: true, runValidators: true }
     );
@@ -169,8 +171,13 @@ app.get("/debug/users", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-  console.log(`Visit: http://localhost:${port}`);
-  console.log(`Homepage: http://localhost:${port}/home`);
-});
+// For Vercel serverless
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+    console.log(`Visit: http://localhost:${port}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;

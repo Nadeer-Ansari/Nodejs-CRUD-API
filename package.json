@@ -1,19 +1,21 @@
 {
-  "name": "project2",
+  "name": "nodejs-crud-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "dev": "nodemon index.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "vercel-build": "npm install"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nadeer Ansari",
   "license": "ISC",
-  "description": "",
+  "description": "Professional CRUD API with Node.js, Express, MongoDB",
   "dependencies": {
     "cors": "^2.8.6",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
-    "mongoose": "^9.5.0"
+    "mongoose": "^9.5.0",
+    "serverless-http": "^4.0.0"
   }
 }
