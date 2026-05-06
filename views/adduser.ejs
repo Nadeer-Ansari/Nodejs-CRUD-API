@@ -1,0 +1,37 @@
+<%- include('header.ejs') %>
+<div class="container">
+  <h1>Add User</h1>
+  <form action="/useraction" method="post" class="container mt-5">
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Name"
+        name="name"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <input
+        type="number"
+        class="form-control"
+        placeholder="Enter Age"
+        name="age"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Enter Place"
+        name="place"
+        required
+      />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>

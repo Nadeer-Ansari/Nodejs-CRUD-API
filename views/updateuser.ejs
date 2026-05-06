@@ -1,0 +1,32 @@
+<%- include('header.ejs') %>
+    <div class="container mt-5">
+        <h1>Update User</h1>
+
+        <% if(user) { %>
+            <form action="/updateaction/<%= user._id %>" method="post" class="mt-4">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name"
+                        value="<%= user.name %>" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="age" placeholder="Enter Age" name="age"
+                        value="<%= user.age %>" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="place" class="form-label">Place</label>
+                    <input type="text" class="form-control" id="place" placeholder="Enter Place" name="place"
+                        value="<%= user.place %>" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update User</button>
+                <a href="/showuser" class="btn btn-secondary">Cancel</a>
+            </form>
+            <% } else { %>
+                <p class="text-danger">User not found!</p>
+                <a href="/showuser" class="btn btn-secondary">Back to Users</a>
+                <% } %>
+    </div>
