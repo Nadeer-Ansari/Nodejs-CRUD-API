@@ -1,53 +1,420 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>User Management System</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/home">
-      <i class="fas fa-users"></i> UserManagement
-    </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link <%= currentPage === 'home' ? 'active' : '' %>" href="/home">
-            <i class="fas fa-home"></i> Home
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <%= currentPage === 'showuser' ? 'active' : '' %>" href="/showuser">
-            <i class="fas fa-list"></i> Users
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link <%= currentPage === 'adduser' ? 'active' : '' %>" href="/adduser">
-            <i class="fas fa-user-plus"></i> Add User
-          </a>
-        </li>
-      </ul>
+<%- include('header.ejs') %>
+
+  <div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="hero-section text-center">
+      <div class="container">
+        <h1 class="display-4 welcome-message">Welcome to User Management System</h1>
+        <p class="lead mt-3">Efficiently manage your users with our modern and intuitive interface</p>
+        <div class="action-buttons mt-4">
+          <a href="/showuser" class="btn btn-light btn-lg">View All Users</a>
+          <a href="/adduser" class="btn btn-outline-light btn-lg">Add New User</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="row mt-5">
+      <div class="col-md-3 mb-4">
+        <div class="stat-card">
+          <div class="stat-number" id="totalUsers">0</div>
+          <h5>Total Users</h5>
+          <p class="text-muted">Registered members</p>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="stat-card">
+          <div class="stat-number" id="avgAge">0</div>
+          <h5>Average Age</h5>
+          <p class="text-muted">Years old</p>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="stat-card">
+          <div class="stat-number" id="totalPlaces">0</div>
+          <h5>Cities</h5>
+          <p class="text-muted">Different locations</p>
+        </div>
+      </div>
+      <div class="col-md-3 mb-4">
+        <div class="stat-card">
+          <div class="stat-number" id="recentCount">0</div>
+          <h5>Recent Users</h5>
+          <p class="text-muted">Last 5 members</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mt-4 mb-5">
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="feature-icon">👥</div>
+          <h4>User Management</h4>
+          <p>Add, edit, and delete users with ease using our intuitive interface</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="feature-icon">📊</div>
+          <h4>Analytics</h4>
+          <p>Track user statistics and gain insights about your user base</p>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="text-center">
+          <div class="feature-icon">🔒</div>
+          <h4>Secure</h4>
+          <p>Your data is safe and secure with our robust system</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Users & Suggestions Section -->
+    <div class="row mt-4">
+      <div class="col-lg-8 mb-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <h5 class="mb-0">📋 Recent Users</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Place</th>
+                  </tr>
+                </thead>
+                <tbody id="recentUsersList">
+                  <tr>
+                    <td colspan="3" class="text-center">
+                      <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-center mt-3">
+              <a href="/showuser" class="btn btn-sm btn-primary">View All Users →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 mb-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <h5 class="mb-0">💡 Suggestions For You</h5>
+          </div>
+          <div class="card-body" id="suggestionsContainer">
+            <div id="suggestionsList">
+              <div class="text-center">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</nav>
+
+  <script>
+    // Function to fetch and display statistics
+    async function loadDashboardData() {
+      try {
+        const response = await fetch('/api/users');
+        const users = await response.json();
+
+        console.log('Fetched users:', users); // Debug log
+
+        if (Array.isArray(users) && users.length > 0) {
+          // Update total users
+          document.getElementById('totalUsers').textContent = users.length;
+
+          // Calculate average age
+          const totalAge = users.reduce((sum, user) => sum + (user.age || 0), 0);
+          const avgAge = users.length > 0 ? Math.round(totalAge / users.length) : 0;
+          document.getElementById('avgAge').textContent = avgAge;
+
+          // Count unique places
+          const uniquePlaces = [...new Set(users.map(user => user.place).filter(place => place))];
+          document.getElementById('totalPlaces').textContent = uniquePlaces.length;
+
+          // Count recent users (last 5)
+          const recentCount = Math.min(users.length, 5);
+          document.getElementById('recentCount').textContent = recentCount;
+
+          // Load recent users table
+          loadRecentUsers(users);
+
+          // Load suggestions
+          loadSuggestions(users);
+        } else {
+          // No users found
+          document.getElementById('totalUsers').textContent = '0';
+          document.getElementById('avgAge').textContent = '0';
+          document.getElementById('totalPlaces').textContent = '0';
+          document.getElementById('recentCount').textContent = '0';
+
+          document.getElementById('recentUsersList').innerHTML = `
+        <tr>
+          <td colspan="3" class="text-center text-muted">
+            No users found. <a href="/adduser">Add your first user!</a>
+          </td>
+        </tr>
+      `;
+
+          document.getElementById('suggestionsList').innerHTML = `
+        <div class="suggestion-item" onclick="window.location.href='/adduser'">
+          <div class="d-flex align-items-center">
+            <div class="suggestion-icon">➕</div>
+            <div>
+              <strong>Add Your First User</strong>
+              <p class="mb-0 small">Get started by adding a new user to the system</p>
+            </div>
+          </div>
+        </div>
+      `;
+        }
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        document.getElementById('totalUsers').textContent = 'Error';
+        document.getElementById('avgAge').textContent = 'Error';
+        document.getElementById('totalPlaces').textContent = 'Error';
+        document.getElementById('recentCount').textContent = 'Error';
+      }
+    }
+
+    // Load recent users
+    function loadRecentUsers(users) {
+      const recentUsersList = document.getElementById('recentUsersList');
+
+      if (users && users.length > 0) {
+        // Get last 5 users (most recent) and reverse to show newest first
+        const recentUsers = users.slice(-5).reverse();
+
+        recentUsersList.innerHTML = recentUsers.map(user => `
+      <tr>
+        <td><strong>${escapeHtml(user.name)}</strong></td>
+        <td>${user.age}</td>
+        <td>${escapeHtml(user.place)}</td>
+      </tr>
+    `).join('');
+      } else {
+        recentUsersList.innerHTML = `
+      <tr>
+        <td colspan="3" class="text-center">No users found</td>
+      </tr>
+    `;
+      }
+    }
+
+    // Load suggestions
+    function loadSuggestions(users) {
+      const suggestionsContainer = document.getElementById('suggestionsList');
+
+      if (!users || users.length === 0) {
+        suggestionsContainer.innerHTML = `
+      <div class="suggestion-item" onclick="window.location.href='/adduser'">
+        <div class="d-flex align-items-center">
+          <div class="suggestion-icon">➕</div>
+          <div>
+            <strong>Add Your First User</strong>
+            <p class="mb-0 small">Get started by creating a new user</p>
+          </div>
+        </div>
+      </div>
+    `;
+        return;
+      }
+
+      const suggestions = [];
+
+      // Suggestion based on user count
+      if (users.length < 5) {
+        suggestions.push({
+          icon: '👥',
+          title: 'Build Your Community',
+          description: `You have ${users.length} user${users.length !== 1 ? 's' : ''}. Add more to grow!`,
+          action: '/adduser'
+        });
+      } else if (users.length > 10) {
+        suggestions.push({
+          icon: '🎉',
+          title: 'Great Growth!',
+          description: `You have ${users.length} users! Keep up the great work!`,
+          action: '/showuser'
+        });
+      }
+
+      // Calculate average age
+      const avgAge = users.reduce((sum, u) => sum + u.age, 0) / users.length;
+      if (avgAge < 25) {
+        suggestions.push({
+          icon: '🎓',
+          title: 'Young Community',
+          description: 'Most users are young. Consider youth-focused features!',
+          action: '/showuser'
+        });
+      } else if (avgAge > 45) {
+        suggestions.push({
+          icon: '👴',
+          title: 'Experienced Users',
+          description: 'Senior user base detected. Consider accessibility features!',
+          action: '/showuser'
+        });
+      }
+
+      // Geographic diversity
+      const places = [...new Set(users.map(u => u.place))];
+      if (places.length === 1) {
+        suggestions.push({
+          icon: '📍',
+          title: 'Expand Your Reach',
+          description: `All users from ${places[0]}. Try reaching other locations!`,
+          action: '/adduser'
+        });
+      } else if (places.length > 3) {
+        suggestions.push({
+          icon: '🌍',
+          title: 'Great Diversity!',
+          description: `Users from ${places.length} different locations!`,
+          action: '/showuser'
+        });
+      }
+
+      // Add quick tip if no other suggestions
+      if (suggestions.length === 0) {
+        suggestions.push({
+          icon: '💡',
+          title: 'Quick Tip',
+          description: 'You can edit or delete users from the user list page',
+          action: '/showuser'
+        });
+      }
+
+      // Display suggestions (limit to 3)
+      suggestionsContainer.innerHTML = suggestions.slice(0, 3).map(suggestion => `
+    <div class="suggestion-item" onclick="window.location.href='${suggestion.action}'">
+      <div class="d-flex align-items-center">
+        <div class="suggestion-icon" style="font-size: 2rem; margin-right: 15px;">${suggestion.icon}</div>
+        <div>
+          <strong>${suggestion.title}</strong>
+          <p class="mb-0 small text-muted">${suggestion.description}</p>
+        </div>
+      </div>
+    </div>
+  `).join('');
+    }
+
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Load all data when page loads
+    document.addEventListener('DOMContentLoaded', function () {
+      loadDashboardData();
+    });
+
+    // Refresh data every 30 seconds
+    setInterval(loadDashboardData, 30000);
+  </script>
+
+  <style>
+    .hero-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 0;
+      border-radius: 20px;
+      margin-top: 20px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      color: #667eea;
+      margin-bottom: 20px;
+    }
+
+    .action-buttons .btn {
+      margin: 10px;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-weight: 600;
+    }
+
+    .suggestion-item {
+      padding: 15px;
+      margin-bottom: 10px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .suggestion-item:hover {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .suggestion-item:hover .text-muted {
+      color: white !important;
+    }
+
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .table thead th {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+    }
+
+    @media (max-width: 768px) {
+      .hero-section {
+        padding: 40px 20px;
+      }
+
+      .hero-section h1 {
+        font-size: 1.5rem;
+      }
+
+      .stat-number {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+
+  <%- include('footer.ejs') %>
