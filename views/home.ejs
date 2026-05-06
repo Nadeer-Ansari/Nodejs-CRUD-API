@@ -1,3 +1,21 @@
+<%
+// Calculate stats on server side
+let stats = { totalUsers: 0, avgAge: 0, totalPlaces: 0, recentCount: 0, recentUsers: [] };
+try {
+    const users = await MyModel.find();
+    const validUsers = users.filter(u => u && u.name);
+    stats.totalUsers = validUsers.length;
+    
+    if (validUsers.length > 0) {
+        const totalAge = validUsers.reduce((sum, u) => sum + (u.age || 0), 0);
+        stats.avgAge = Math.round(totalAge / validUsers.length);
+        const uniquePlaces = [...new Set(validUsers.map(u => u.place).filter(p => p))];
+        stats.totalPlaces = uniquePlaces.length;
+        stats.recentCount = Math.min(validUsers.length, 5);
+        stats.recentUsers = validUsers.slice(-5).reverse();
+    }
+} catch(e) { console.error(e); }
+%>
 <%- include('header.ejs') %>
 
 <div class="container">
