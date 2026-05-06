@@ -15,6 +15,33 @@ app.set("view engine", "ejs");
 // Serve static files
 app.use(express.static('public'));
 
+// Test database connection endpoint
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const dbState = mongoose.connection.readyState;
+    const states = {
+      0: "disconnected",
+      1: "connected",
+      2: "connecting",
+      3: "disconnecting"
+    };
+    
+    res.json({
+      mongodb_status: states[dbState],
+      ready_state: dbState,
+      database_name: mongoose.connection.name || "Not connected",
+      message: dbState === 1 ? "Database is connected!" : "Database is not connected"
+    });
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+});
+
+// Simple test route
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Server is running!", timestamp: new Date().toISOString() });
+});
+
 // ============ VIEW ROUTES ============
 
 // Home page route
@@ -178,6 +205,9 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`Visit: http://localhost:${port}`);
   });
 }
-
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+  console.log(`Visit: http://localhost:${port}`);
+});
 // Export for Vercel
 module.exports = app;
