@@ -1,37 +1,54 @@
 <%- include('header.ejs') %>
-<div class="container">
-  <h1>Add User</h1>
-  <form action="/useraction" method="post" class="container mt-5">
-    <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Name"
-        name="name"
-        required
-      />
-    </div>
 
-    <div class="mb-3">
-      <input
-        type="number"
-        class="form-control"
-        placeholder="Enter Age"
-        name="age"
-        required
-      />
-    </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card-modern animate-fadeInUp">
+          <div class="card-header bg-white border-0 p-4">
+            <h3 class="mb-0">
+              <i class="fas fa-user-plus"></i> Add New User
+            </h3>
+            <p class="text-muted mt-2">Fill in the details to add a new user</p>
+          </div>
+          <div class="card-body p-4">
+            <form action="/useraction" method="post">
+              <div class="mb-4">
+                <label class="form-label fw-bold">
+                  <i class="fas fa-user"></i> Full Name
+                </label>
+                <input type="text" name="name" class="form-control form-control-modern" placeholder="Enter full name"
+                  required>
+              </div>
 
-    <div class="mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Enter Place"
-        name="place"
-        required
-      />
-    </div>
+              <div class="mb-4">
+                <label class="form-label fw-bold">
+                  <i class="fas fa-calendar"></i> Age
+                </label>
+                <input type="number" name="age" class="form-control form-control-modern" placeholder="Enter age" min="1"
+                  max="120" required>
+              </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div>
+              <div class="mb-4">
+                <label class="form-label fw-bold">
+                  <i class="fas fa-map-marker-alt"></i> Place
+                </label>
+                <input type="text" name="place" class="form-control form-control-modern"
+                  placeholder="Enter city/location" required>
+              </div>
+
+              <div class="d-flex justify-content-end gap-2">
+                <a href="/showuser" class="btn-gradient-outline" style="text-decoration: none;">
+                  <i class="fas fa-times"></i> Cancel
+                </a>
+                <button type="submit" class="btn-gradient">
+                  <i class="fas fa-save"></i> Save User
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('footer.ejs') %>
