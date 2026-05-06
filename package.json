@@ -15,7 +15,6 @@
     "cors": "^2.8.6",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
-    "mongoose": "^9.5.0",
-    "serverless-http": "^4.0.0"
+    "mongoose": "^9.5.0"
   }
 }

@@ -20,15 +20,18 @@
             "dest": "/public/js/$1"
         },
         {
-            "src": "/favicon.ico",
-            "dest": "/public/favicon.ico"
+            "src": "/api/(.*)",
+            "dest": "/index.js"
         },
         {
             "src": "/(.*)",
-            "dest": "index.js"
+            "dest": "/index.js"
         }
     ],
-    "env": {
-        "PORT": "9000"
+    "functions": {
+        "index.js": {
+            "maxDuration": 10,
+            "memory": 1024
+        }
     }
 }
