@@ -1,26 +1,25 @@
 const mongoose = require("mongoose");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   age: {
     type: Number,
-    required: true
+    required: true,
+    min: 1,
+    max: 120
   },
   place: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   }
+}, {
+  timestamps: true  // Optional: adds createdAt and updatedAt
 });
 
-module.exports = mongoose.model("User", userSchema);
-const Schema = mongoose.Schema;
-
-const BlogPost = new Schema({
-  name: String,
-  age: Number,
-  place: String,
-});
-const MyModel = mongoose.model("users", BlogPost);
-module.exports = MyModel;
+// Prevent model overwrite error in development
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);
