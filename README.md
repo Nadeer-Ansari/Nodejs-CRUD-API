@@ -295,8 +295,8 @@ npm i -g netlify-cli
 netlify deploy --prod
 ```
 
-### Deploy on Heroku
-https://www.heroku.com/deploy/button.svg
+### Deploy on Render
+https://smart-crud-dashboard.onrender.com
 
 ---
 
